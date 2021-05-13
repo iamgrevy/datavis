@@ -1,4 +1,4 @@
-fetch("stork.json")
+fetch("http:mj.js")
  .then(function (response) {
     return response.json();
   })
