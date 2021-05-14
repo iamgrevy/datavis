@@ -4,7 +4,6 @@ fetch("mj.json")
   })
   .then(function (jsonData) {
 });
-   // создаём карту
    var mymap = L.map("mapid").setView([59.958067, 30.296409], 13);
 
    // загружаем карту (картинку)
