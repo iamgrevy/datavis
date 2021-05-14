@@ -37,5 +37,5 @@ fetch("mj.json")
    // фокусируем карту на нашем polyline
    mymap.fitBounds(polyline.getBounds());
 
-   // добавляем поп-ап на наш polyline
+   
    polyline.bindPopup("Eudocimus Abel");
