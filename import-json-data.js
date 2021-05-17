@@ -1,10 +1,13 @@
 fetch("mj.json")
- .then(function (response) {
+.then(function (response) {
     return response.json();
-  })
-  .then(function (jsonData) {
-});
-   var mymap = L.map("mapid").setView([59.958067, 30.296409], 13);
+
+})
+.then(function (jsonData) {
+    console.log(jsonData);
+  console.log("doin smth else");
+   // создаём карту
+   var mymap = L.map("mapid").setView([51.2538, 85.3232], 13);
 
    // загружаем карту (картинку)
    L.tileLayer(
@@ -18,24 +21,31 @@ fetch("mj.json")
        zoomOffset: -1,
      }
    ).addTo(mymap);
-   // создаём маркеры и добавляем на карту
-   var cafe1 = L.marker([59.958135, 30.297632]).addTo(mymap);
-   var cafe2 = L.marker([59.958987, 30.303655]).addTo(mymap);
 
-   // создаём маркер с поп-апом и добавляем на карту
-   var palmBeach = L.marker([26.700707, -80.037261]).addTo(mymap);
-   palmBeach.bindPopup("It is PALM BEACH!");
+   var michaeljacksonLocation = jsonData.map(function(jsonData) 
+   { // каждый элемент массива превращается в [lat, lng]
+    return [jsonData["location-lat"], jsonData["location-long"]];
+  });
+  console.log(michaeljacksonLocation);
 
-   // форматируем данные для polyline
-   var storksLocations = jsonData.map(function (stork) {
-     // каждый элемент массива превращается в [lat, lng]
-     return [stork["location-lat"], stork["location-long"]];
-   });
+//   
 
-   // рисуем polyline по точкам из storksLocations и добавляем на карту
-   var polyline = L.polyline(storksLocations, { color: "red" }).addTo(mymap);
-   // фокусируем карту на нашем polyline
-   mymap.fitBounds(polyline.getBounds());
+var polyline = L.polyline(michaeljacksonLocation, { color: "red" }).addTo(mymap);
+mymap.fitBounds(polyline.getBounds());
+    polyline.bindPopup("MJ");
 
-   
-   polyline.bindPopup("Eudocimus Abel");
+
+    // для каждого элемента массива jsonData
+    jsonData.forEach(function (jsonData) {
+      // создаём кружок с координатами, взятыми из элемента массива (переменная stork)
+      var circle = L.circle([jsonData["location-lat"], jsonData["location-long"]], {
+        radius: 10000,
+      });
+      // привязываем к кружку поп-ап с данными, взятыми из элемента массива (переменная stork)
+      var note = "MJ" + jsonData.city.toUpperCase() + jsonData.time.toUpperCase();
+      circle.bindPopup(note);
+      // добавляем кружок на карту
+      circle.addTo(mymap);
+    });
+
+    });
